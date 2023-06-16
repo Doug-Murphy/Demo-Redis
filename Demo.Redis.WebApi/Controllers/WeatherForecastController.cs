@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Demo.Redis.Controllers;
+namespace Demo.Redis.WebApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]

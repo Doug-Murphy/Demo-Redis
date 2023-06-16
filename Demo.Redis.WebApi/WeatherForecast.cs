@@ -1,4 +1,4 @@
-namespace Demo.Redis;
+namespace Demo.Redis.WebApi;
 
 public class WeatherForecast {
     public DateOnly Date { get; set; }
