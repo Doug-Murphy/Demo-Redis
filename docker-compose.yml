@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis
+    container_name: redis
+    restart: always
+    ports:
+      - 6379:6379
+  
+  api:
+    depends_on:
+      - redis
+    build:
+      context: .
+      dockerfile: Demo.Redis/Dockerfile
+    ports:
+      - 5109:80
+      - 7232:443
