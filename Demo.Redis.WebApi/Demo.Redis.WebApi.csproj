@@ -21,4 +21,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Demo.Redis.Infrastructure.Redis\Demo.Redis.Infrastructure.Redis.csproj" />
+    </ItemGroup>
+
 </Project>
