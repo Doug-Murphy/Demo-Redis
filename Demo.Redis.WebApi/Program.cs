@@ -1,4 +1,6 @@
+using Demo.Redis.Infrastructure.Postgres;
 using Demo.Redis.Infrastructure.Redis;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<PersonContext>();
+builder.Services.AddScoped<PersonsRepository>();
+
 builder.Services.AddSingleton<RedisConnectionFactory>();
 
 var app = builder.Build();
@@ -17,6 +22,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+await using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope()) {
+    var dbContext = serviceScope.ServiceProvider.GetRequiredService<PersonContext>();
+    await dbContext.Database.MigrateAsync();
 }
 
 app.UseHttpsRedirection();

@@ -22,6 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Demo.Redis.Infrastructure.Postgres\Demo.Redis.Infrastructure.Postgres.csproj" />
       <ProjectReference Include="..\Demo.Redis.Infrastructure.Redis\Demo.Redis.Infrastructure.Redis.csproj" />
     </ItemGroup>
 
