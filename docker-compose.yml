@@ -20,7 +20,7 @@ services:
       - redis
     build:
       context: .
-      dockerfile: Demo.Redis/Dockerfile
+      dockerfile: Demo.Redis.WebApi/Dockerfile
     ports:
       - 5109:80
       - 7232:443
