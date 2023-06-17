@@ -6,7 +6,6 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Demo.Redis.WebApi/Demo.Redis.WebApi.csproj", "Demo.Redis.WebApi/"]
-COPY ["Demo.Redis.Infrastructure.Redis/Demo.Redis.Infrastructure.Redis.csproj", "Demo.Redis.Infrastructure.Redis/"]
 COPY ["Demo.Redis.Infrastructure.Postgres/Demo.Redis.Infrastructure.Postgres.csproj", "Demo.Redis.Infrastructure.Postgres/"]
 RUN dotnet restore "Demo.Redis.WebApi/Demo.Redis.WebApi.csproj"
 COPY . .
