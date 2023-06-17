@@ -1,3 +1,4 @@
+using Demo.Redis.Infrastructure.Postgres.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace Demo.Redis.Infrastructure.Postgres.Models;
@@ -10,4 +11,7 @@ public record Person {
 
     [Required]
     public required string LastName { get; set; }
+
+    [Required]
+    public required PersonType Type { get; set; }
 }

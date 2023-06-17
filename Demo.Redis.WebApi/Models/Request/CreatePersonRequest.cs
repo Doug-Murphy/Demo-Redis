@@ -1,4 +1,5 @@
-﻿using Demo.Redis.Infrastructure.Postgres.Models;
+﻿using Demo.Redis.Infrastructure.Postgres.Enums;
+using Demo.Redis.Infrastructure.Postgres.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace Demo.Redis.WebApi.Models.Request;
@@ -13,10 +14,14 @@ public sealed record CreatePersonRequest {
     [Required]
     public required string LastName { get; set; }
 
+    [Required]
+    public required PersonType Type { get; set; }
+
     public Person ToDatabasePerson() {
         return new Person {
             FirstName = FirstName,
-            LastName = LastName
+            LastName = LastName,
+            Type = Type
         };
     }
 }
