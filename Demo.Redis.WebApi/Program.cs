@@ -1,6 +1,6 @@
 using Demo.Redis.Infrastructure.Postgres;
-using Demo.Redis.Infrastructure.Redis;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,8 +17,15 @@ builder.Services.AddSwaggerGen(options => {
 
 builder.Services.AddDbContext<PersonContext>();
 builder.Services.AddScoped<PersonsRepository>();
+builder.Services.AddSingleton<IConnectionMultiplexer>(x => {
+    var connectionConfigOptions = new ConfigurationOptions {
+        EndPoints = {
+            builder.Configuration.GetConnectionString("Redis")!
+        }
+    };
 
-builder.Services.AddSingleton<RedisConnectionFactory>();
+    return ConnectionMultiplexer.Connect(connectionConfigOptions);
+});
 
 var app = builder.Build();
 
