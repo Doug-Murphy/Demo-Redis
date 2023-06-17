@@ -1,19 +1,11 @@
 using Demo.Redis.Infrastructure.Postgres.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace Demo.Redis.Infrastructure.Postgres;
 
 public sealed class PersonContext : DbContext {
-    private readonly IConfiguration _configuration;
-
-    public PersonContext(IConfiguration configuration) {
-        _configuration = configuration;
+    public PersonContext(DbContextOptions<PersonContext> options) : base(options) {
     }
 
     public DbSet<Person> Persons { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-        optionsBuilder.UseNpgsql(_configuration.GetConnectionString("Postgres"));
-    }
 }

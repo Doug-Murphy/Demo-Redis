@@ -15,7 +15,7 @@ builder.Services.AddSwaggerGen(options => {
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 
-builder.Services.AddDbContext<PersonContext>();
+builder.Services.AddDbContext<PersonContext>(options => { options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres")); });
 builder.Services.AddScoped<PersonsRepository>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(x => {
     var connectionConfigOptions = new ConfigurationOptions {
