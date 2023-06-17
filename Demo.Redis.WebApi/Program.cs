@@ -38,6 +38,14 @@ if (app.Environment.IsDevelopment()) {
 await using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateAsyncScope()) {
     var dbContext = serviceScope.ServiceProvider.GetRequiredService<PersonContext>();
     await dbContext.Database.MigrateAsync();
+    //the DB is now seeded with the lookup data that is a good candidate for storing into Redis
+
+    //fetch the data from the database
+    var personTypes = dbContext.PersonTypes.AsNoTracking().Select(personType => new HashEntry(personType.Type, personType.Id)).ToArray();
+
+    //store the data into Redis for future reads
+    var redisConnection = serviceScope.ServiceProvider.GetRequiredService<IConnectionMultiplexer>();
+    await redisConnection.GetDatabase().HashSetAsync("PersonTypes", personTypes);
 }
 
 app.UseHttpsRedirection();
