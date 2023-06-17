@@ -1,4 +1,6 @@
 using Demo.Redis.Infrastructure.Postgres;
+using Demo.Redis.Infrastructure.Postgres.Models;
+using Demo.Redis.WebApi.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
@@ -53,5 +55,24 @@ public class PersonTypeController : ControllerBase {
         }
 
         return Ok(personTypes.ToDictionary(personType => personType.Type, personType => personType.Id));
+    }
+
+    /// <summary>
+    /// Add a new person type value.
+    /// </summary>
+    /// <param name="request">The person type value to create.</param>
+    /// <returns></returns>
+    [HttpPost]
+    [ProducesResponseType((int) HttpStatusCode.Created)]
+    public async Task<IActionResult> Create([FromBody] CreatePersonTypeRequest request) {
+        var newRecord = new PersonTypeTable {Type = request.Type};
+        _personContext.PersonTypes.Add(newRecord);
+        await _personContext.SaveChangesAsync();
+
+        //after saving new record to database, refresh Redis with the latest values
+        var personTypes = _personContext.PersonTypes.AsNoTracking().Select(personType => new HashEntry(personType.Type, personType.Id)).ToArray();
+        await _connectionMultiplexer.GetDatabase().HashSetAsync("PersonTypes", personTypes);
+
+        return new StatusCodeResult((int) HttpStatusCode.Created);
     }
 }
