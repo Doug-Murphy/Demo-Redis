@@ -23,6 +23,7 @@ services:
       dockerfile: Demo.Redis.WebApi/Dockerfile
     environment:
       ConnectionStrings__Postgres: "Host=postgres:5432;Username=postgres;Password=password;Database=postgres"
+      ConnectionStrings__Redis: "redis:6379"
     ports:
       - 5109:80
       - 7232:443
